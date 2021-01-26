@@ -1,0 +1,61 @@
+docker version
+docker info
+docker run --name nginx-webserver -p 80:80 nginx
+-> http://192.168.99.100 (nginx)
+
+No windows quando dá ctrl+c ele continua em execução, precisando dar um 
+docker stop <container_id/name>
+
+Detached mode (inicializa o container e deixa rodando em background)
+docker run -d ....
+
+"docker run" sempre inicia um novo container
+"docker start" inicia um existente que está parado
+
+Logs do container
+docker logs <container_id/name>
+
+Para ver os processos rodando no container
+docker top <container_id/name>
+
+Para remover um container
+docker rm <container_id/name>
+
+Para filtrar uma listagem de arquivos no linux
+comando | grep <nome-do-objeto>
+
+inciando um container do nginx
+docker run -d --name nginx -p 80:80 nginx
+
+inciando um container do apache (webserver)
+docker run -d --name apache-webserver -p 8080:80 httpd
+
+inciando um container do mysql com senha aleatória
+docker run -d --name mysql -p 3306:3306 -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql
+
+Para ver a senha criada
+docker logs mysql 
+(ex: theeHiteir3Xoo6ooJ6chaed7oqueiv4)
+
+Exibe os valores de metadata do container
+docker inspect <container_id/name>
+
+Mostra em tempo real a performance dos processos em execução do container
+docker stats <container_id/name>
+
+Para iniciar um container e entrar no bash dele
+docker run -it --name proxy nginx bash
+
+No caso de ubuntu, ele já entra direto no bash, sem precisa especificar no comando
+docker run -it --name ubuntu ubuntu
+
+Iniciando um container que estava parado e acessando seu terminal
+"-ai" = attach + interactive
+docker start -ai <container_id/name>
+
+Para executar um comando em um container em execução
+docker exec -it mysql bash (vai entrar no bash do container mysql)
+Neste caso, ao sair do bash com exit, não irá encerrar o container.
+
+Alpine não tem um bash
+docker run --rm -it --name alpine1 alpine /bin/sh (ou apenas sh)
