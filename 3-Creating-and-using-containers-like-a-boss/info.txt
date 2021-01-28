@@ -59,3 +59,47 @@ Neste caso, ao sair do bash com exit, não irá encerrar o container.
 
 Alpine não tem um bash
 docker run --rm -it --name alpine1 alpine /bin/sh (ou apenas sh)
+
+Para inspecionar o valor de determinado metadado
+docker run -d -p 80:80 --name webhost nginx
+docker inspect --format "{{ .NetworkSettings.IPAddress }}" webhost (no linux é aspas simples)
+
+Networks
+- showing -> docker network ls
+- inspect -> docker network inspect (ajuda para saber quais containers estão nessa rede)
+- create -> docker network create <nome> --driver (este último é opcional)
+- attach -> docker network connect
+- dettach -> docker network disconnect
+
+Criando uma rede
+docker network create my_app_net
+
+Criado um container na rede acima criada
+docker run -d --name new_nginx --network my_app_net nginx
+
+Associando um outro container a esta rede (o container não precisa estar executando)
+docker network connect my_app_net webhost
+
+Para remover o container da rede
+docker network disconnect my_app_net webhost
+
+Criado um novo container, associando a rede existente e testando a conexão entre os containers
+docker run -d --name my_nginx --network my_app_net nginx
+docker exec -it my_nginx ping new_nginx
+Obs.: caso não tenha o ping, para instalar basta seguir a sequência no bash:
+- apt update
+- apt install iputils-ping
+
+Assignment DNS round robin test
+-------------------------------
+1) Criar uma rede para colocar os containers
+docker network create dude
+2) Crio 2 containers do elasticsearch na versão 2 associando a esta nova rede, com o alias de search
+docker run -d --name elastic1 --net dude --net-alias search elasticsearch:2
+docker run -d --name elastic2 --net dude --net-alias search elasticsearch:2
+3) Crio um container do alpine configurado para resolver o nome "search" (DNS), da rede
+docker run -d --rm --name alpine-search --net dude alpine nslookup search
+4) Crio um container do centos e associo a rede criada executando uma consulta no nome "search"
+docker run --rm --net dude --name centos centos curl -s search:9200
+5) O comando acima irá retornar a página padrão de um dos containers do elastic (Name = "alguma coisa")
+6) Caso eu execute novamente o item 4, retornarei outro container do elastico (Name = "outra coisa")
