@@ -8,3 +8,6 @@ Para corrigir isso, faça o seguinte:
 - docker-machine env default
 - pegue a última linha (que vai ter um "for"), copie, cole e execute
 - pronto
+
+Repositório do professor
+https://github.com/BretFisher/udemy-docker-mastery

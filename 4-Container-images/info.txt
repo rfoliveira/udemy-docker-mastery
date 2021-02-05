@@ -1,0 +1,20 @@
+Baixando uma imagem
+docker pull <nome_da_imagem>
+
+Para ver o histórico de execução de comandos em uma imagem
+docker history <image>
+
+Para atribuir uma ou mais tags em  uma imagem
+docker image tag source_image:tag target_image:tag
+
+Para subir uma imagem no docker hub (semelhante ao git)
+docker push <image_id | image_name>:tag
+
+Para executar um arquivo dockerfile na pasta que está
+docker build -t customnginx . (obs.: pode ser qualquer nome)
+
+Se mudar algo no dockerfile, o docker usará cache para o que não foi alterado e 
+apenas mudará o que foi de fato alterado. Este é um dos motivos de se usar dockerfiles.
+Dessa forma o container não é recriado toda a vez que é dado build.
+
+
