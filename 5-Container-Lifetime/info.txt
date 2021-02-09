@@ -1,0 +1,37 @@
+An introduction to immutable infrastructure
+https://www.oreilly.com/radar/an-introduction-to-immutable-infrastructure/
+
+The twelve-factor app
+https://12factor.net/
+
+12 Fractured Apps
+https://medium.com/@kelseyhightower/12-fractured-apps-1080c73d481c#.cjvkgw4b3
+
+Docker storage introduction
+https://docs.docker.com/storage/
+
+Remover o container não remove os volumes
+
+Definindo um nome amigável para o volume
+docker run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v mysql-db:/var/lib/mysql mysql
+
+Dessa forma consigo reutilizar o volume acima em outra imagem
+docker run -d --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v mysql-db:/var/lib/mysql mysql
+
+Formas de informar no parâmetro de volume o diretório atual
+linux / mac / docker toolbox = $(pwd)
+powershell = ${pwd}
+cmd = %cd%
+
+Usando bind-data (mapeando um arquivo / pasta do host para um arquivo/pasta no container
+docker run -v //c/users/eu/folder:/path-in-container (windows)
+docker run -v /users/eu/folder:/path-in-container (mac / linux)
+
+Pasta compartilhada na VM
+c:\docker-volumes
+
+Mapeando a pasta no container para a pasta no host (pelo docker toolbox)
+cd c:\docker-volumes > md nginx > notepad index.html > com qualquer conteúdo html...
+docker run -d --name nginx-with-vol -p 80:80 -v $(pwd)/nginx:/usr/share/nginx/html nginx
+
+Da forma acima, ao dar um docker inspect no container criado, irá aparecer em "Mounts" e não em "Volumes"
